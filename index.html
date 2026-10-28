@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>정이한 첫돌 잔치 — 똑똑! 문 열어주세요 🚪</title>
+<meta name="description" content="똑똑! 이한이가 문을 두드려요. 2027년 4월 3일(토) 오전 11시, 이한이의 첫 번째 생일에 초대합니다.">
+<meta name="theme-color" content="#ffe7d2">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="정이한 첫돌 잔치">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="똑똑! 이한이가 문을 두드려요 🚪 정이한 첫돌 잔치">
+<meta property="og:description" content="문 열어주세요~ 이한이의 첫 생일에 초대합니다. 2027.04.03(토) 오전 11:00 · 고메스퀘어 동탄직영점">
+<meta property="og:image" content="https://jjsuri.github.io/ihan-first-birthday/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gowun+Dodum&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.className+=' js intro-lock';</script>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- 도어 인트로: 탭 / 스크롤 / Enter 로 열립니다 -->
+<div class="intro" id="intro" role="button" tabindex="0" aria-label="문을 열고 초대장 보기">
+  <div class="stage">
+    <div class="door">
+      <div class="peephole" aria-hidden="true"></div>
+      <div class="plate" aria-hidden="true">이한이네</div>
+      <div class="sign">정이한<br>첫돌 잔치<small>1st Birthday</small></div>
+      <div class="balloons" aria-hidden="true">🎈🎈🎈</div>
+      <div class="knob" aria-hidden="true"></div>
+    </div>
+    <p class="knock-hint">똑똑! 문을 톡 눌러 열어주세요 ✨</p>
+  </div>
+</div>
+
+<main class="app">
+
+  <!-- 히어로 + 영상 -->
+  <section class="hero" id="top">
+    <div class="fx" id="fx" aria-hidden="true"></div>
+    <p class="eyebrow reveal">1st Birthday Invitation</p>
+    <h1 class="reveal" style="--rd:.08s">똑똑! 🚪</h1>
+    <p class="lead reveal" style="--rd:.16s">이한이가 문을 두드려요</p>
+
+    <div class="door-frame reveal" style="--rd:.2s">
+      <div class="video-box">
+        <video id="babyVideo" poster="assets/poster.jpg"
+               muted loop playsinline webkit-playsinline preload="metadata" controls controlslist="nodownload noremoteplayback"
+               aria-label="문 앞에서 똑똑 노크하는 이한이 영상">
+          <source src="assets/baby.mp4" type="video/mp4">
+          영상을 재생할 수 없는 브라우저예요.
+        </video>
+        <button class="sound-btn" id="soundBtn" type="button" data-on="false">🔊 소리 켜기</button>
+      </div>
+    </div>
+
+    <div class="bubbles">
+      <div class="bubble reveal">🚪 “집에 있어? 집에 있어요?”<small>똑똑똑</small></div>
+      <div class="bubble reveal" style="--rd:.12s">🪜 “문 열어주세요! 문 열어주세요!”<small>까치발 들고 영차</small></div>
+    </div>
+
+    <p class="invite-line reveal">문 열어주세요,<br><em>이한이의 첫 생일</em>에<br>초대합니다 🎈</p>
+
+    <div class="countdown reveal" id="countdown" aria-live="off">
+      <div class="dday" id="dday">D-?</div>
+      <div class="cd-label" id="cdLabel">이한이의 첫 생일까지</div>
+      <div class="cd-grid" id="cdGrid">
+        <div class="cd-cell"><b id="cdD">-</b><span>일</span></div>
+        <div class="cd-cell"><b id="cdH">--</b><span>시간</span></div>
+        <div class="cd-cell"><b id="cdM">--</b><span>분</span></div>
+        <div class="cd-cell"><b id="cdS">--</b><span>초</span></div>
+      </div>
+      <div class="cd-done" id="cdDone" hidden></div>
+    </div>
+    <p class="scroll-cue">▼ 아래로 내려서 초대장을 확인해 주세요</p>
+  </section>
+
+  <!-- 인사말 -->
+  <section class="greeting">
+    <p class="eyebrow reveal">From. 이한</p>
+    <h2 class="sec-title reveal">이한이가 전하는 인사</h2>
+    <div class="divider reveal"></div>
+    <div class="letter reveal">
+      <p>할아버지, 할머니, 삼촌, 이모, 고모<br>모두 안녕하세요!</p>
+      <p>언제 이렇게 컸는지<br>벌써 제가 태어난 지 1년이 되었대요.</p>
+      <p>늘 아껴주시고 사랑 가득 담아<br>응원해 주셔서 감사해요.</p>
+      <p>소중한 가족분들과 맛있는 밥 한 끼<br>나누는 자리를 준비했으니<br>꼭 오셔서 함께 축하해 주세요! 🥰</p>
+      <p class="from">- 이한 올림 -</p>
+    </div>
+  </section>
+
+  <!-- 안내 -->
+  <section class="info">
+    <p class="eyebrow reveal">Information</p>
+    <h2 class="sec-title reveal">잔치 안내</h2>
+    <div class="card reveal">
+      <div class="row"><div class="ico" aria-hidden="true">🗓️</div><div><span class="lbl">일시</span><div class="val">2027년 4월 3일(토) 오전 11:00<small>런치 1부 · 11:00 ~ 13:00</small></div></div></div>
+      <div class="row"><div class="ico" aria-hidden="true">📍</div><div><span class="lbl">장소</span><div class="val">고메스퀘어 동탄직영점<small>룸 3번</small></div></div></div>
+      <div class="row"><div class="ico" aria-hidden="true">🏠</div><div><span class="lbl">주소</span><div class="val">경기 화성시 동탄구 동탄역로 102<small>엘리스빌 3층 (Gate 6)</small></div></div></div>
+      <div class="row"><div class="ico" aria-hidden="true">🚗</div><div><span class="lbl">주차</span><div class="val">건물 지하 무료 주차 2시간<small>주차 지원</small></div></div></div>
+    </div>
+
+    <div class="btns reveal">
+      <button class="btn btn-cal" id="calBtn" type="button">📅 내 캘린더에 추가하기</button>
+      <a class="btn btn-naver" href="https://naver.me/GQGgInN1" target="_blank" rel="noopener">🗺️ 네이버 지도로 길찾기</a>
+      <button class="btn btn-ghost" id="copyBtn" type="button">📋 주소 복사하기</button>
+    </div>
+  </section>
+
+  <!-- 연락 -->
+  <section class="contact">
+    <p class="eyebrow reveal">Contact</p>
+    <h2 class="sec-title reveal">궁금한 점이 있으면 편하게 연락 주세요</h2>
+    <div class="btn-row reveal">
+      <a class="btn btn-call" href="tel:010-2500-9017">📞 아빠에게 전화</a>
+      <a class="btn btn-call" href="tel:010-4046-0796">📞 엄마에게 전화</a>
+    </div>
+  </section>
+
+  <!-- 갤러리 -->
+  <section class="gallery">
+    <p class="eyebrow reveal">Gallery</p>
+    <h2 class="sec-title reveal">쑥쑥 자란 이한이의 1년</h2>
+    <div class="grid" id="photoGrid"></div>
+  </section>
+
+  <footer>
+    <div class="emoji">🎂</div>
+    <p class="reveal">함께해 주셔서 감사합니다</p>
+    <p class="names">아빠 정성훈 · 엄마 김수림</p>
+    <p class="tiny" style="margin-top:14px">올림 ❤️</p>
+  </footer>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+<script src="assets/app.js"></script>
+</body>
+</html>
