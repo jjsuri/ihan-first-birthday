@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>이한이의 첫 번째 생일에 초대합니다</title>
+<meta name="description" content="NOW SHOWING · 2027. 04. 03 SAT 오전 11:00 · 고메스퀘어 동탄직영점. 분유 한 병 훔치러 왔다가 돌잔치에 초대합니다. 이한이의 첫 생일에 초대합니다.">
+<meta name="theme-color" content="#14100E">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="정이한 첫돌 잔치">
+<meta property="og:title" content="분유 한 병 훔치러 왔다가 — 이한이의 첫 번째 생일">
+<meta property="og:description" content="NOW SHOWING · 2027. 04. 03 SAT 오전 11:00 · 고메스퀘어 동탄직영점에서 기다릴게요.">
+<meta property="og:url" content="https://jjsuri.github.io/ihan-first-birthday/v8/">
+<meta property="og:image" content="https://jjsuri.github.io/ihan-first-birthday/v8/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="영화 포스터처럼 만든 이한이의 첫 번째 생일 초대장">
+<link rel="image_src" href="https://jjsuri.github.io/ihan-first-birthday/v8/assets/og-square.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="분유 한 병 훔치러 왔다가 — 이한이의 첫 번째 생일">
+<meta name="twitter:description" content="NOW SHOWING · 2027. 04. 03 SAT 오전 11:00 · 고메스퀘어 동탄직영점에서 기다릴게요.">
+<meta name="twitter:image" content="https://jjsuri.github.io/ihan-first-birthday/v8/assets/og.jpg">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2064%2064%22%3E%3Crect%20width=%2264%22%20height=%2264%22%20rx=%2214%22%20fill=%22%2314100E%22/%3E%3Cpath%20d=%22M9%2030h46v22a4%204%200%200%201-4%204H13a4%204%200%200%201-4-4z%22%20fill=%22%23F6E7D0%22/%3E%3Cpath%20d=%22M8%2012l48%208-2.500%2010H6z%22%20fill=%22%23E8492F%22/%3E%3Cpath%20d=%22M20%2014l-5%2016M33%2016l-5%2014M46%2018l-5%2012%22%20stroke=%22%2314100E%22%20stroke-width=%225%22/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="assets/poster.jpg">
+<link rel="preload" href="assets/fonts/pretendard-sub.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/blackhan-sub.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/bebas-sub.woff2" as="font" type="font/woff2" crossorigin>
+<script>document.documentElement.className+=' js';</script>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.200 7-11.5a7 7 0 0 0-14 0C5 14.800 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1.5 1.5 0 0 1-1.5 1.5A15.5 15.5 0 0 1 3.5 5.5 1.5 1.5 0 0 1 5 4z"/></symbol>
+</defs></svg>
+
+<!-- 고정 배경: 영상(주인공) + 비네팅 + 라이트 리크 -->
+<div class="stage" id="stage" aria-hidden="true">
+  <video class="bg-far" id="bgFar" muted loop playsinline webkit-playsinline preload="none" tabindex="-1"></video>
+  <div class="bg-col">
+    <video class="bg-vid" id="bgVid" poster="assets/poster.jpg" muted loop playsinline webkit-playsinline preload="auto" tabindex="-1"></video>
+  </div>
+  <div class="scrim" id="scrim"></div>
+  <div class="vig"></div>
+  <div class="leak"></div>
+</div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="tools">
+  <button class="icon-btn" id="soundBtn" type="button" aria-label="예고편 소리 켜기" aria-pressed="false"></button>
+</div>
+
+<main class="app">
+
+  <!-- HERO : 영화 포스터 (레터박스 + NOW SHOWING) -->
+  <header class="hero" id="top">
+    <div class="bar top"><p class="now"><i aria-hidden="true"></i>Now Showing</p><p class="rate"><span class="x">ALL AGES · </span>전체 관람가</p></div>
+    <div class="hero-copy">
+      <div class="stack">
+        <p class="tag">분유 한 병 훔치러 왔다가</p>
+        <h1>이한이의<br>첫 번째 생일</h1>
+        <p class="cap"><span>돌잔치에 초대합니다</span></p>
+      </div>
+    </div>
+    <div class="bar bot">
+      <p class="hero-date"><span>2027. 04. 03</span> SAT <i aria-hidden="true"></i> 11:00 AM</p>
+      <p class="bill">정이한 주연 &nbsp;·&nbsp; 정성훈 &nbsp;·&nbsp; 김수림 출연</p>
+      <a class="scroll-cue" href="#invite" aria-label="아래로 스크롤"><span class="lbl">Scroll</span><span class="arr" aria-hidden="true"></span></a>
+    </div>
+  </header>
+
+  <!-- 시놉시스 = 초대합니다 -->
+  <section class="act greeting" id="invite">
+    <div class="reel reveal">
+      <p class="scn reveal">Scene 01 · Synopsis</p>
+      <h2 class="reveal" style="--d:.06s">시놉시스</h2>
+      <p class="kor reveal" style="--d:.1s">초대합니다</p>
+      <div class="letter reveal">
+        <p>안녕하세요.</p>
+        <p>이한이가 우리에게 와 준 지<br>어느덧 한 해가 되었습니다.</p>
+        <p>서툰 부모를 믿고 하루하루 자라 준 아이와<br>그 곁을 따뜻하게 지켜봐 주신<br>모든 분들 덕분입니다.</p>
+        <p>고마운 마음을 담아<br>소박한 식사 자리를 마련했습니다.<br>바쁘시겠지만 오셔서<br>이한이의 첫 생일을 함께 축하해 주세요.</p>
+        <p class="sign hand">정성훈 · 김수림 드림</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 개봉일 = Save the date (티켓 스텁 달력) -->
+  <section class="act date">
+    <div class="reel reveal">
+      <p class="scn reveal">Scene 02 · Save the date</p>
+      <h2 class="reveal" style="--d:.06s">개봉일</h2>
+      <p class="kor reveal" style="--d:.1s">토요일 오전 11시 · 런치 1부 (11:00 – 13:00)</p>
+      <div class="tk-wrap cal-tk reveal">
+        <div class="tkt">
+          <div class="tk-main">
+            <div class="cal-wrap"><div class="cal" id="calendar" aria-label="2027년 4월 달력"></div></div>
+          </div>
+          <div class="tk-stub">
+            <div class="stub-l"><p class="adm">Admit one · 11:00 AM</p><p class="stub-d">2027. 04. 03 SAT</p></div>
+            <p class="dday" id="dday" aria-live="off">D-</p>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-line reveal" id="calBtn" type="button"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-cal"/></svg>캘린더에 저장</button>
+    </div>
+  </section>
+
+  <!-- 성장 기록 (사진이 있을 때만) -->
+  <section class="act timeline" id="timelineSec" hidden>
+    <div class="reel reveal">
+      <p class="scn reveal">Making film</p>
+      <h2 class="reveal" style="--d:.06s">이한이의 1년</h2>
+      <ol class="tl" id="timeline"></ol>
+    </div>
+  </section>
+
+  <!-- 갤러리 (사진이 있을 때만) -->
+  <section class="act gallery" id="gallerySec" hidden>
+    <div class="reel reveal">
+      <p class="scn reveal">Stills</p>
+      <h2 class="reveal" style="--d:.06s">함께한 순간들</h2>
+      <div class="grid" id="photoGrid"></div>
+    </div>
+  </section>
+
+  <!-- 상영관 = 오시는 길 -->
+  <section class="act location">
+    <div class="reel reveal">
+      <p class="scn reveal">Scene 03 · Theater</p>
+      <h2 class="reveal" style="--d:.06s">상영관</h2>
+      <p class="kor reveal" style="--d:.1s">오시는 길</p>
+      <div class="place reveal">
+        <p class="venue">고메스퀘어 동탄직영점</p>
+        <p class="room">룸 3번</p>
+        <p class="addr" id="addrText">경기 화성시 동탄구 동탄역로 102<br>엘리스빌 3층 (Gate 6)</p>
+        <p class="park"><span>주차</span> 건물 지하 무료 2시간</p>
+      </div>
+      <div class="btn-col reveal">
+        <a class="btn btn-solid" href="https://naver.me/GQGgInN1" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg>네이버 지도 길찾기</a>
+        <button class="btn btn-line" id="copyBtn" type="button"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-copy"/></svg>주소 복사</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 예매하기 = RSVP (티켓 스텁) -->
+  <section class="act rsvp">
+    <div class="reel reveal">
+      <p class="scn reveal">Scene 04 · Tickets</p>
+      <h2 class="reveal" style="--d:.06s">예매하기</h2>
+      <p class="kor reveal" style="--d:.1s">참석 여부를 알려주세요</p>
+      <p class="sub reveal" style="--d:.14s">아래 버튼을 누르면 문자 메시지 작성 화면이 열려요.</p>
+      <div class="tk-wrap rsvp-tk reveal">
+        <form class="tkt rsvp-form" id="rsvpForm" novalidate>
+          <div class="tk-main">
+            <p class="adm">Admit one · 룸 3번</p>
+            <fieldset>
+              <legend>누구에게 보낼까요</legend>
+              <div class="seg" role="group" aria-label="받는 사람">
+                <button type="button" class="seg-btn" data-who="dad" aria-pressed="true">아빠에게</button>
+                <button type="button" class="seg-btn" data-who="mom" aria-pressed="false">엄마에게</button>
+              </div>
+            </fieldset>
+            <label class="field"><span>성함</span><input id="guestName" type="text" autocomplete="name" placeholder="예) 홍길동" maxlength="20"></label>
+            <div class="field"><span>참석 인원</span>
+              <div class="stepper"><button type="button" id="cntMinus" aria-label="인원 줄이기">−</button><output id="cntVal" aria-live="polite">1</output><button type="button" id="cntPlus" aria-label="인원 늘리기">+</button></div>
+            </div>
+            <p class="hint" id="rsvpHint" role="alert" hidden></p>
+          </div>
+          <div class="tk-stub btns">
+            <button class="btn btn-solid" type="button" id="goBtn">참석할게요</button>
+            <button class="btn btn-line" type="button" id="noBtn">아쉽게 못 가요</button>
+          </div>
+        </form>
+      </div>
+      <p class="hand wait" aria-hidden="true">기다릴게요!</p>
+    </div>
+  </section>
+
+  <!-- 문의 = 연락하기 -->
+  <section class="act contact">
+    <div class="reel reveal">
+      <p class="scn reveal">Scene 05 · Contact</p>
+      <h2 class="reveal" style="--d:.06s">연락하기</h2>
+      <p class="kor reveal" style="--d:.1s">문의</p>
+      <div class="btn-row reveal">
+        <a class="btn btn-line" href="tel:010-2500-9017"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>아빠에게 전화</a>
+        <a class="btn btn-line" href="tel:010-4046-0796"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>엄마에게 전화</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 엔딩 크레딧 -->
+  <footer class="act end">
+    <div class="reel credits reveal">
+      <h2 class="cr-h reveal">엔딩 크레딧</h2>
+      <p class="cr-k reveal" style="--d:.06s">Starring</p>
+      <p class="cr-star reveal" style="--d:.1s">이한이</p>
+      <p class="cr-k reveal" style="--d:.14s">With love</p>
+      <p class="cr-v reveal" style="--d:.18s">아빠 정성훈 · 엄마 김수림</p>
+      <p class="hand cr-thanks reveal" style="--d:.24s">고맙습니다</p>
+      <p class="en reveal" style="--d:.3s">Ihan, one year.</p>
+      <p class="fine reveal" style="--d:.34s">이 영화는 실화입니다. 분유는 무사히 회수되었습니다.</p>
+    </div>
+  </footer>
+</main>
+
+<div class="lb" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="사진 크게 보기">
+  <button class="lb-close" id="lbClose" type="button" aria-label="닫기">×</button>
+  <button class="lb-nav prev" id="lbPrev" type="button" aria-label="이전 사진">‹</button>
+  <img id="lbImg" alt="">
+  <button class="lb-nav next" id="lbNext" type="button" aria-label="다음 사진">›</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<noscript><style>.reveal{opacity:1!important;transform:none!important}.circ path,.arrow path{stroke-dashoffset:0!important}</style></noscript>
+<script src="assets/app.js"></script>
+</body>
+</html>
