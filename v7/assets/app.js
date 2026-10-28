@@ -1,10 +1,8 @@
 /* =====================================================================
  * 이한이의 첫 번째 생일 — 편집 안내
- * 1) 갤러리: assets/photos/01.jpg ~ 06.jpg 를 넣으면 '함께한 순간들' 섹션이 자동으로 나타나요.
- *    파일이 하나도 없으면 섹션 전체가 숨겨져요. 실제로 열리는 사진만 표시됩니다. (첫 사진은 크게)
- *    사진 수를 늘리려면 PHOTOS 배열에 줄을 추가하세요.
- * 2) 성장 기록: assets/photos/m1.jpg ~ m4.jpg 를 넣으면 '이한이의 1년' 섹션이 자동으로 나타나요.
- *    사진이 있는 항목만 표시되고, 하나도 없으면 섹션이 숨겨져요.
+ * 1) 갤러리: 사진을 assets/photos/ 에 넣고 assets/photos/manifest.json 의 "gallery" 목록에 파일명을 적으면 '함께한 순간들' 섹션이 나타나요.
+ *    목록이 비어 있으면(기본값) 섹션 전체가 숨겨지고 사진 파일도 요청하지 않아요. (첫 사진은 크게)
+ * 2) 성장 기록: manifest.json 의 "timeline" 에 "m1.jpg" 처럼 적으면 '이한이의 1년' 섹션이 나타나요. (아래 MILESTONES 의 문구 사용)
  *    MILESTONES 의 date('2026. 04. 03' 처럼), note 는 선택 입력입니다. (날짜는 실제 값으로 직접 입력)
  * 3) 배경 영상(항상 재생, 색보정됨): assets/bg.mp4(소리 없음, 상시 재생) / assets/bg_sound.mp4(소리 버튼을 눌렀을 때만 로드).
  * ===================================================================== */
@@ -128,6 +126,9 @@ if (typeof module !== 'undefined' && module.exports) {
 
   var CIRCLE = '<svg class="circ" viewBox="0 0 54 50" aria-hidden="true" focusable="false"><path pathLength="1" d="M28 5C42 3 51 14 49 26 47 39 35 46 23 45 10 43 4 32 7 21 10 10 22 4 36 7"/></svg>';
 
+  /* 달력의 3일에 붙는 손글씨 메모 + 화살표: 3일 칸(span) 안에 있어서 화살표 끝이 항상 동그라미에 닿아요 */
+  var NOTE = '<i class="hand note" aria-hidden="true">이한이 첫돌!</i><svg class="arrow" viewBox="0 0 40 80" aria-hidden="true" focusable="false"><path pathLength="1" d="M30 3C37 24 35 46 18 64"/><path pathLength="1" d="M18 64L28 60M18 64L18 52"/></svg>';
+
   /* 스크롤 리빌 (동적으로 추가된 요소도 다시 호출하면 관찰) */
   var io = null;
   function reveal() {
@@ -156,7 +157,7 @@ if (typeof module !== 'undefined' && module.exports) {
     mo.weeks.forEach(function (w) {
       h += '<tr>';
       w.forEach(function (c, i) {
-        h += '<td class="' + (i === 0 ? 'sun ' : '') + (c === day ? 'on' : '') + '"' + (c === day ? ' aria-label="' + y + '년 ' + m + '월 ' + c + '일 토요일, 행사일"' : '') + '>' + (c ? '<span>' + c + (c === day ? CIRCLE : '') + '</span>' : '') + '</td>';
+        h += '<td class="' + (i === 0 ? 'sun ' : '') + (c === day ? 'on' : '') + '"' + (c === day ? ' aria-label="' + y + '년 ' + m + '월 ' + c + '일 토요일, 행사일"' : '') + '>' + (c ? '<span>' + c + (c === day ? CIRCLE + NOTE : '') + '</span>' : '') + '</td>';
       });
       h += '</tr>';
     });
@@ -188,34 +189,62 @@ if (typeof module !== 'undefined' && module.exports) {
       im.src = src;
     });
   }
+  /* assets/photos/manifest.json 을 읽어 어떤 사진을 보여줄지 정해요 (목록이 비어 있으면 사진 파일을 아예 요청하지 않고 섹션도 숨김 → 콘솔 404 없음) */
+  var manifestP = null;
+  function loadManifest() {
+    if (manifestP) return manifestP;
+    manifestP = (window.fetch ? fetch('assets/photos/manifest.json', { cache: 'no-cache' }) : Promise.reject())
+      .then(function (r) { return r && r.ok ? r.json() : {}; }).catch(function () { return {}; })
+      .then(function (m) { return { gallery: Array.isArray(m && m.gallery) ? m.gallery : [], timeline: Array.isArray(m && m.timeline) ? m.timeline : [] }; });
+    return manifestP;
+  }
+  function base(f) { return String(f).split('/').pop(); }
   function renderTimeline() {
     var ol = $('#timeline'), sec = $('#timelineSec'); if (!ol || !sec) return;
-    var items = MILESTONES.filter(function (m) { return m.photo; });
-    probe(items.map(function (m) { return m.photo; }), function (ok) {
-      var shown = items.filter(function (m, i) { return ok[i]; });
-      if (!shown.length) { sec.hidden = true; return; }
-      ol.innerHTML = shown.map(function (m, i) {
-        return '<li class="reveal" style="--d:' + (i * 0.05) + 's"><div class="mono" aria-hidden="true">IH</div><div>' +
-          '<div class="en-l">' + esc(m.en || '') + '</div><div class="lab">' + esc(m.label) + '</div>' +
-          (m.date ? '<div class="dt">' + esc(m.date) + '</div>' : '') + (m.note ? '<p class="note">' + esc(m.note) + '</p>' : '') +
-          '<div class="ph"><img src="' + esc(m.photo) + '" alt="' + esc(m.label) + '" loading="lazy" decoding="async"></div></div></li>';
-      }).join('');
-      sec.hidden = false; reveal();
+    loadManifest().then(function (man) {
+      var items = man.timeline.map(function (t) {
+        var o = typeof t === 'string' ? { file: t } : (t || {}), file = o.file ? base(o.file) : '';
+        var d = MILESTONES.filter(function (m) { return base(m.photo) === file; })[0] || {};
+        return { en: o.en || d.en || '', label: o.label || d.label || '', date: o.date || d.date || '', note: o.note || d.note || '', photo: file ? 'assets/photos/' + file : '' };
+      }).filter(function (m) { return m.photo && m.label; });
+      probe(items.map(function (m) { return m.photo; }), function (ok) {
+        var shown = items.filter(function (m, i) { return ok[i]; });
+        if (!shown.length) { sec.hidden = true; return; }
+        ol.innerHTML = shown.map(function (m, i) {
+          return '<li class="reveal" style="--d:' + (i * 0.05) + 's"><div class="mono" aria-hidden="true">IH</div><div>' +
+            '<div class="en-l">' + esc(m.en || '') + '</div><div class="lab">' + esc(m.label) + '</div>' +
+            (m.date ? '<div class="dt">' + esc(m.date) + '</div>' : '') + (m.note ? '<p class="note">' + esc(m.note) + '</p>' : '') +
+            '<div class="ph"><img src="' + esc(m.photo) + '" alt="' + esc(m.label) + '" loading="lazy" decoding="async"></div></div></li>';
+        }).join('');
+        sec.hidden = false; tilt(); reveal();
+      });
     });
   }
   function renderGallery() {
     var g = $('#photoGrid'), sec = $('#gallerySec'); if (!g || !sec) return;
-    probe(PHOTOS.map(function (p) { return p.src; }), function (ok) {
-      var shown = PHOTOS.filter(function (p, i) { return p.src && ok[i]; });
-      if (!shown.length) { sec.hidden = true; return; }
-      var rest = shown.length - 1;
-      g.innerHTML = shown.map(function (p, i) {
-        var wide = i === 0 || (i === shown.length - 1 && rest % 2 === 1);
-        return '<figure class="shot reveal' + (wide ? ' wide' : '') + '"><img src="' + esc(p.src) + '" alt="' + esc(p.alt || '') + '" decoding="async"></figure>';
-      }).join('');
-      [].forEach.call(g.querySelectorAll('.shot'), function (f) { f.addEventListener('click', function () { openLb(f.querySelector('img')); }); });
-      sec.hidden = false; reveal();
+    loadManifest().then(function (man) {
+      var list = man.gallery.map(function (t, i) {
+        var o = typeof t === 'string' ? { file: t } : (t || {}), file = o.file ? base(o.file) : '';
+        var d = PHOTOS.filter(function (p) { return base(p.src) === file; })[0];
+        return { src: file ? 'assets/photos/' + file : '', alt: o.alt || (d && d.alt) || ('이한이 사진 ' + (i + 1)) };
+      }).filter(function (p) { return p.src; });
+      probe(list.map(function (p) { return p.src; }), function (ok) {
+        var shown = list.filter(function (p, i) { return ok[i]; });
+        if (!shown.length) { sec.hidden = true; return; }
+        var rest = shown.length - 1;
+        g.innerHTML = shown.map(function (p, i) {
+          var wide = i === 0 || (i === shown.length - 1 && rest % 2 === 1);
+          return '<figure class="shot reveal' + (wide ? ' wide' : '') + '"><img src="' + esc(p.src) + '" alt="' + esc(p.alt || '') + '" decoding="async"></figure>';
+        }).join('');
+        [].forEach.call(g.querySelectorAll('.shot'), function (f) { f.addEventListener('click', function () { openLb(f.querySelector('img')); }); });
+        sec.hidden = false; tilt(); reveal();
+      });
     });
+  }
+  /* 시트를 번갈아 살짝 기울여요 (보이는 시트만 세서 -,+,-,+ 순서가 유지돼요) */
+  function tilt() {
+    var s = document.querySelectorAll('.sheet:not([hidden]):not(.credits)'), k = 0, i;
+    for (i = 0; i < s.length; i++) { s[i].style.setProperty('--rot', (k % 2 ? 1.3 : -1.5) + 'deg'); k++; }
   }
 
   /* 라이트박스 */
@@ -341,7 +370,7 @@ if (typeof module !== 'undefined' && module.exports) {
   var tools = $('.tools'), idleT = null;
   function overlapsInteractive() {
     var r = sb.getBoundingClientRect(); if (!r.width && !r.height) return false;
-    var m = 8, list = document.querySelectorAll('.btn, .seg-btn, .stepper button, .field input, .shot, .scroll-cue');
+    var m = 8, list = document.querySelectorAll('.btn, .seg-btn, .stepper button, .field input, .shot, .scroll-cue, .credits');
     for (var i = 0; i < list.length; i++) {
       var q = list[i].getBoundingClientRect();
       if (q.right > r.left - m && q.left < r.right + m && q.bottom > r.top - m && q.top < r.bottom + m && q.width && q.height) return true;
@@ -354,6 +383,13 @@ if (typeof module !== 'undefined' && module.exports) {
     tools.classList.add('away'); clearTimeout(idleT); idleT = setTimeout(showTools, 650);
   }
   if (!still) window.addEventListener('scroll', hideTools, { passive: true });
+  /* 엔딩 크레딧이 보이면 소리 버튼을 숨겨요 (크레딧 모서리를 가리지 않도록) */
+  var credits = document.querySelector('.credits');
+  if (credits && tools && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (ents) {
+      ents.forEach(function (e) { tools.classList.toggle('off', e.isIntersecting); });
+    }, { rootMargin: '0px 0px -20px 0px', threshold: 0 }).observe(credits);
+  }
 
   /* ---------- 스크롤 연동 스크림(가볍게) + 섹션별 컬러 무드 ---------- */
   var scrim = $('#scrim'), tint = $('#tint'), ticking = false;
@@ -382,5 +418,5 @@ if (typeof module !== 'undefined' && module.exports) {
     [].forEach.call(document.querySelectorAll('.sheet[data-tint]'), function (s) { tio.observe(s); });
   }
 
-  renderCalendar(); renderTimeline(); renderGallery(); startCountdown(); reveal();
+  tilt(); renderCalendar(); renderTimeline(); renderGallery(); startCountdown(); reveal();
 })();
